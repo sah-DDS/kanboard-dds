@@ -8,7 +8,19 @@ use PDO;
 use Kanboard\Core\Security\Token;
 use Kanboard\Core\Security\Role;
 
-const VERSION = 117;
+const VERSION = 118;
+
+function version_118(PDO $pdo)
+{
+    $pdo->exec('CREATE TABLE "user_has_browser_notifications" (
+        "id" SERIAL PRIMARY KEY,
+        "user_id" INTEGER NOT NULL,
+        "date_creation" BIGINT NOT NULL,
+        "event_name" TEXT NOT NULL,
+        "event_data" TEXT NOT NULL,
+        FOREIGN KEY("user_id") REFERENCES users(id) ON DELETE CASCADE
+    )');
+}
 
 function version_117(PDO $pdo)
 {

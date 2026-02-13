@@ -98,6 +98,7 @@ class ClassProvider implements ServiceProviderInterface
             'UserLockingModel',
             'UserNotificationModel',
             'UserNotificationFilterModel',
+            'UserBrowserNotificationModel',
             'UserUnreadNotificationModel',
             'UserMetadataModel',
         ),

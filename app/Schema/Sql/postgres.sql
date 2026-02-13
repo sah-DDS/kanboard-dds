@@ -1273,6 +1273,39 @@ CREATE TABLE "public"."user_has_notifications" (
 
 
 --
+-- Name: user_has_browser_notifications; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE "public"."user_has_browser_notifications" (
+    "id" integer NOT NULL,
+    "user_id" integer NOT NULL,
+    "date_creation" bigint NOT NULL,
+    "event_name" "text" NOT NULL,
+    "event_data" "text" NOT NULL
+);
+
+
+--
+-- Name: user_has_browser_notifications_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE "public"."user_has_browser_notifications_id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: user_has_browser_notifications_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE "public"."user_has_browser_notifications_id_seq" OWNED BY "public"."user_has_browser_notifications"."id";
+
+
+--
 -- Name: user_has_unread_notifications; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1572,6 +1605,13 @@ ALTER TABLE ONLY "public"."transitions" ALTER COLUMN "id" SET DEFAULT "nextval"(
 --
 
 ALTER TABLE ONLY "public"."user_has_notification_types" ALTER COLUMN "id" SET DEFAULT "nextval"('"public"."user_has_notification_types_id_seq"'::"regclass");
+
+
+--
+-- Name: user_has_browser_notifications id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "public"."user_has_browser_notifications" ALTER COLUMN "id" SET DEFAULT "nextval"('"public"."user_has_browser_notifications_id_seq"'::"regclass");
 
 
 --
@@ -2034,6 +2074,14 @@ ALTER TABLE ONLY "public"."user_has_notification_types"
 
 ALTER TABLE ONLY "public"."user_has_notifications"
     ADD CONSTRAINT "user_has_notifications_project_id_user_id_key" UNIQUE ("project_id", "user_id");
+
+
+--
+-- Name: user_has_browser_notifications user_has_browser_notifications_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "public"."user_has_browser_notifications"
+    ADD CONSTRAINT "user_has_browser_notifications_pkey" PRIMARY KEY ("id");
 
 
 --
@@ -2643,6 +2691,14 @@ ALTER TABLE ONLY "public"."user_has_notifications"
 
 
 --
+-- Name: user_has_browser_notifications user_has_browser_notifications_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "public"."user_has_browser_notifications"
+    ADD CONSTRAINT "user_has_browser_notifications_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE CASCADE;
+
+
+--
 -- Name: user_has_unread_notifications user_has_unread_notifications_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2748,4 +2804,4 @@ SELECT pg_catalog.setval('public.links_id_seq', 11, true);
 --
 
 INSERT INTO public.users (username, password, role) VALUES ('admin', '$2y$10$GzDCeQl/GdH.pCZfz4fWdO3qmayutRCmxEIY9U9t1k9q9F89VNDCm', 'app-admin');
-INSERT INTO public.schema_version VALUES ('111');
+INSERT INTO public.schema_version VALUES ('118');

@@ -40,6 +40,22 @@ class UserHelper extends Base
     }
 
     /**
+     * Return true if the logged user has selected a notification type
+     *
+     * @access public
+     * @param  string $type
+     * @return boolean
+     */
+    public function hasNotificationType($type)
+    {
+        if (! $this->userSession->isLogged()) {
+            return false;
+        }
+
+        return in_array($type, $this->userNotificationTypeModel->getSelectedTypes($this->userSession->getId()), true);
+    }
+
+    /**
      * Get initials from a user
      *
      * @access public

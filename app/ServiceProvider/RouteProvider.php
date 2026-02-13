@@ -231,6 +231,7 @@ class RouteProvider implements ServiceProviderInterface
             $container['route']->addRoute('user/:user_id/notifications/web', 'WebNotificationController', 'show');
             $container['route']->addRoute('user/:user_id/notifications/web/flush/:csrf_token', 'WebNotificationController', 'flush');
             $container['route']->addRoute('user/:user_id/notifications/web/remove/:notification_id/:csrf_token', 'WebNotificationController', 'remove');
+            $container['route']->addRoute('user/:user_id/notifications/browser/stream', 'BrowserNotificationController', 'stream');
             $container['route']->addRoute('invite/signup/:token', 'UserInviteController', 'signup');
 
             // Groups

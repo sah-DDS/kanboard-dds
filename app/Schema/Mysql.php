@@ -8,7 +8,21 @@ use PDO;
 use Kanboard\Core\Security\Token;
 use Kanboard\Core\Security\Role;
 
-const VERSION = 139;
+const VERSION = 140;
+
+function version_140(PDO $pdo)
+{
+    $pdo->exec("CREATE TABLE `user_has_browser_notifications` (
+        `id` int(11) NOT NULL AUTO_INCREMENT,
+        `user_id` int(11) NOT NULL,
+        `date_creation` bigint(20) NOT NULL,
+        `event_name` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
+        `event_data` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
+        PRIMARY KEY (`id`),
+        KEY `user_id` (`user_id`),
+        CONSTRAINT `user_has_browser_notifications_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+}
 
 function version_139(PDO $pdo)
 {

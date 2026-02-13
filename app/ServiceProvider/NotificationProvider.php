@@ -8,6 +8,7 @@ use Kanboard\Model\UserNotificationTypeModel;
 use Kanboard\Model\ProjectNotificationTypeModel;
 use Kanboard\Notification\MailNotification as MailNotification;
 use Kanboard\Notification\WebNotification as WebNotification;
+use Kanboard\Notification\BrowserNotification as BrowserNotification;
 
 /**
  * Notification Provider
@@ -30,6 +31,7 @@ class NotificationProvider implements ServiceProviderInterface
             $type = new UserNotificationTypeModel($container);
             $type->setType(MailNotification::TYPE, t('Email'), '\Kanboard\Notification\MailNotification');
             $type->setType(WebNotification::TYPE, t('Web'), '\Kanboard\Notification\WebNotification');
+            $type->setType(BrowserNotification::TYPE, t('Browser'), '\Kanboard\Notification\BrowserNotification');
             return $type;
         };
 

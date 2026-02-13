@@ -48,6 +48,11 @@
             <?php endif ?>
         </title>
 
+        <script>
+            console.log('[Kanboard Template] Head script executing');
+            console.log('[Kanboard Template] Current URL:', window.location.href);
+        </script>
+
         <?= $this->hook->render('template:layout:head') ?>
     </head>
     <body data-status-url="<?= $this->url->href('UserAjaxController', 'status') ?>"
@@ -56,6 +61,7 @@
           data-timezone="<?= $this->app->getTimezone() ?>"
           data-js-date-format="<?= $this->app->getJsDateFormat() ?>"
           data-js-time-format="<?= $this->app->getJsTimeFormat() ?>"
+          data-user-id="<?= $this->user->getId() ?>"
     >
 
     <?php if (isset($no_layout) && $no_layout): ?>

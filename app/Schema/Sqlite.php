@@ -8,7 +8,20 @@ use Kanboard\Core\Security\Token;
 use Kanboard\Core\Security\Role;
 use PDO;
 
-const VERSION = 128;
+const VERSION = 129;
+
+function version_129(PDO $pdo)
+{
+    $pdo->exec("CREATE TABLE user_has_browser_notifications (
+        id INTEGER PRIMARY KEY,
+        user_id INTEGER NOT NULL,
+        date_creation INTEGER NOT NULL,
+        event_name TEXT NOT NULL,
+        event_data TEXT NOT NULL,
+        FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
+    )");
+    $pdo->exec('CREATE INDEX user_has_browser_notifications_user_idx ON user_has_browser_notifications(user_id)');
+}
 
 function version_128(PDO $pdo)
 {
