@@ -1,20 +1,34 @@
 <section id="task-summary">
     <h2><?= $this->text->e($task['title']) ?></h2>
-
+    <?php if ($this->projectRole->canUpdateTask($task)): ?>
+        <li>
+            <?= $this->modal->large('edit', t('Edit the task'), 'TaskModificationController', 'edit', array('task_id' => $task['id'])) ?>
+        </li>
+        <?php endif ?>
     <?= $this->hook->render('template:task:details:top', array('task' => $task)) ?>
 
     <div class="task-summary-container color-<?= $task['color_id'] ?>">
         <div class="task-summary-columns">
             <div class="task-summary-column">
                 <ul class="no-bullet">
+                    <?php if (! empty($task['category_name'])): ?>
+                        <li>
+                            <strong><?= t('Category:') ?></strong>
+                            <span><?= $this->text->e($task['category_name']) ?></span>
+                        </li>
+                    <?php endif ?>
+                    <li>
+                        <strong><?= t('Column:') ?></strong>
+                        <span><?= $this->text->e($task['column_title']) ?></span>
+                    </li>
                     <li>
                         <strong><?= t('Status:') ?></strong>
                         <span>
-                        <?php if ($task['is_active'] == 1): ?>
-                            <?= t('open') ?>
-                        <?php else: ?>
-                            <?= t('closed') ?>
-                        <?php endif ?>
+                            <?php if ($task['is_active'] == 1): ?>
+                                <?= t('open') ?>
+                            <?php else: ?>
+                                <?= t('closed') ?>
+                            <?php endif ?>
                         </span>
                     </li>
                     <li>
@@ -31,59 +45,34 @@
                         </li>
                     <?php endif ?>
                     <?php if ($project['is_public']): ?>
-                    <li>
-                        <small>
-                            <?= $this->url->icon('external-link', t('Public link'), 'TaskViewController', 'readonly', array('task_id' => $task['id'], 'token' => $project['token']), false, '', '', true) ?>
-                        </small>
-                    </li>
+                        <li>
+                            <small>
+                                <?= $this->url->icon('external-link', t('Public link'), 'TaskViewController', 'readonly', array('task_id' => $task['id'], 'token' => $project['token']), false, '', '', true) ?>
+                            </small>
+                        </li>
                     <?php endif ?>
                     <?php if ($project['is_public'] && !$editable): ?>
-                    <li>
-                        <small>
-                            <?= $this->url->icon('th', t('Back to the board'), 'BoardViewController', 'readonly', array('token' => $project['token'])) ?>
-                        </small>
-                    </li>
+                        <li>
+                            <small>
+                                <?= $this->url->icon('th', t('Back to the board'), 'BoardViewController', 'readonly', array('token' => $project['token'])) ?>
+                            </small>
+                        </li>
                     <?php endif ?>
 
                     <?= $this->hook->render('template:task:details:first-column', array('task' => $task)) ?>
                 </ul>
             </div>
-            <div class="task-summary-column">
-                <ul class="no-bullet">
-                    <?php if (! empty($task['category_name'])): ?>
-                        <li>
-                            <strong><?= t('Category:') ?></strong>
-                            <span><?= $this->text->e($task['category_name']) ?></span>
-                        </li>
-                    <?php endif ?>
-                    <?php if (! empty($task['swimlane_name'])): ?>
-                        <li>
-                            <strong><?= t('Swimlane:') ?></strong>
-                            <span><?= $this->text->e($task['swimlane_name']) ?></span>
-                        </li>
-                    <?php endif ?>
-                    <li>
-                        <strong><?= t('Column:') ?></strong>
-                        <span><?= $this->text->e($task['column_title']) ?></span>
-                    </li>
-                    <li>
-                        <strong><?= t('Position:') ?></strong>
-                        <span><?= $task['position'] ?></span>
-                    </li>
-
-                    <?= $this->hook->render('template:task:details:second-column', array('task' => $task)) ?>
-                </ul>
-            </div>
+            
             <div class="task-summary-column">
                 <ul class="no-bullet">
                     <li>
                         <strong><?= t('Assignee:') ?></strong>
                         <span>
-                        <?php if ($task['assignee_username']): ?>
-                            <?= $this->text->e($task['assignee_name'] ?: $task['assignee_username']) ?>
-                        <?php else: ?>
-                            <?= t('not assigned') ?>
-                        <?php endif ?>
+                            <?php if ($task['assignee_username']): ?>
+                                <?= $this->text->e($task['assignee_name'] ?: $task['assignee_username']) ?>
+                            <?php else: ?>
+                                <?= t('not assigned') ?>
+                            <?php endif ?>
                         </span>
                         <?php if ($editable && $task['owner_id'] != $this->user->getId()): ?>
                             - <span><?= $this->url->link(t('Assign to me'), 'TaskModificationController', 'assignToMe', ['task_id' => $task['id'], 'csrf_token' => $this->app->getToken()->getReusableCSRFToken()]) ?></span>
@@ -96,16 +85,16 @@
                         </li>
                     <?php endif ?>
                     <?php if ($task['time_estimated']): ?>
-                    <li>
-                        <strong><?= t('Time estimated:') ?></strong>
-                        <span><?= t('%s hours', $task['time_estimated']) ?></span>
-                    </li>
+                        <li>
+                            <strong><?= t('Time estimated:') ?></strong>
+                            <span><?= t('%s hours', $task['time_estimated']) ?></span>
+                        </li>
                     <?php endif ?>
                     <?php if ($task['time_spent']): ?>
-                    <li>
-                        <strong><?= t('Time spent:') ?></strong>
-                        <span><?= t('%s hours', $task['time_spent']) ?></span>
-                    </li>
+                        <li>
+                            <strong><?= t('Time spent:') ?></strong>
+                            <span><?= t('%s hours', $task['time_spent']) ?></span>
+                        </li>
                     <?php endif ?>
 
                     <?= $this->hook->render('template:task:details:third-column', array('task' => $task)) ?>
@@ -119,14 +108,14 @@
                             <span><?= $this->dt->datetime($task['date_due']) ?></span>
                         </li>
                     <?php endif ?>
-                    <li>
+                    <!-- <li>
                         <strong><?= t('Started:') ?></strong>
                         <?php if ($task['date_started']): ?>
                             <span><?= $this->dt->datetime($task['date_started']) ?></span>
                         <?php elseif ($editable): ?>
                             <span><?= $this->url->link(t('Start now'), 'TaskModificationController', 'start', ['task_id' => $task['id'], 'csrf_token' => $this->app->getToken()->getReusableCSRFToken()]) ?></span>
                         <?php endif ?>
-                    </li>
+                    </li> -->
                     <li>
                         <strong><?= t('Created:') ?></strong>
                         <span><?= $this->dt->datetime($task['date_creation']) ?></span>
@@ -136,16 +125,16 @@
                         <span><?= $this->dt->datetime($task['date_modification']) ?></span>
                     </li>
                     <?php if ($task['date_completed']): ?>
-                    <li>
-                        <strong><?= t('Completed:') ?></strong>
-                        <span><?= $this->dt->datetime($task['date_completed']) ?></span>
-                    </li>
+                        <li>
+                            <strong><?= t('Completed:') ?></strong>
+                            <span><?= $this->dt->datetime($task['date_completed']) ?></span>
+                        </li>
                     <?php endif ?>
                     <?php if ($task['date_moved']): ?>
-                    <li>
-                        <strong><?= t('Moved:') ?></strong>
-                        <span><?= $this->dt->datetime($task['date_moved']) ?></span>
-                    </li>
+                        <li>
+                            <strong><?= t('Moved:') ?></strong>
+                            <span><?= $this->dt->datetime($task['date_moved']) ?></span>
+                        </li>
                     <?php endif ?>
 
                     <?= $this->hook->render('template:task:details:fourth-column', array('task' => $task)) ?>
