@@ -43,9 +43,7 @@
             <div class="accordion-content">
                 <?= $this->task->renderFileUpload($screenshot, $files) ?>
             </div>
-            <details class="accordion-section">
-                <summary class="accordion-title"><?= t('Add attachments') ?></summary>
-            </details>
+            
 
             <?= $this->hook->render('template:task:form:bottom-before-buttons', array('values' => $values, 'errors' => $errors)) ?>
 
