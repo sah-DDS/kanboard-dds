@@ -291,12 +291,7 @@ class TaskHelper extends Base
     public function renderFileUpload($screenshot = '', array $files = array())
     {
         $upload_max_size = get_upload_max_size()*0.90; // 10% margin for the orther part of request + conversion in base64
-        $html =  '<div class="task-form-bottom-column">';
-        $html .=  '    <div id="screenshot-zone">';
-        $html .=  '        <p id="screenshot-inner">'.t('Take a screenshot and press CTRL+V or ⌘+V to paste here.').'</p>';
-        $html .=  '    </div>';
-        $html .=  '</div>';
-        $html .=  '<div class="task-form-bottom-column">';
+        $html =  '<div style="width:100%">';
         $html .=  $this->helper->app->component('file-upload-task-create', array(
             'maxSize'           => $upload_max_size,
             'labelDropzone'     => t('Drag and drop your files here'),
